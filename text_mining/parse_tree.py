@@ -9,6 +9,7 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+
 PATH = 'C:/Users/12968/Desktop/数据科学实战-stock prediction/程序/词典/'
 
 
@@ -59,6 +60,10 @@ class ParseTree:
         return np.sum(sumHeights)
 
     def avg_height(self):
+        """
+        这篇文章的每句话的语法分析树的平均高度
+        :return:
+        """
         return self.sum_of_heights() / len(self.sentences)
 
     def no_less_than_16(self):
@@ -74,11 +79,15 @@ class ParseTree:
         return num
 
     def no_less_than_16_percent(self):
+        """
+        高度不低于１６的语法分析树的比例
+        :return:
+        """
         return self.no_less_than_16() / len(self.sentences)
 
     def nodes_sum(self):
         """
-        节点数
+        总节点数
         :return:
         """
         node_sums = []
@@ -140,6 +149,10 @@ class ParseTree:
         return num
 
     def avg_np(self):
+        """
+        语法分析树的平均名词短语个数
+        :return:
+        """
         return self.np_sum() / len(self.sentences)
 
     def vp_sum(self):
@@ -156,6 +169,10 @@ class ParseTree:
         return num
 
     def avg_vp(self):
+        """
+        语法分析树的平均动词短语个数
+        :return:
+        """
         return self.vp_sum() / len(self.sentences)
 
     def adjp_sum(self):
@@ -172,6 +189,10 @@ class ParseTree:
         return num
 
     def avg_adjp(self):
+        """
+        语法分析树的平均形容词短语个数
+        :return:
+        """
         return self.adjp_sum() / len(self.sentences)
 
 

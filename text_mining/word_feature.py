@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # _*_ coding:utf-8 _*_
 
-from preprocess import chinese_chars, segment, split_paragraph
+from preprocess import *
+import jieba.posseg as peg
 
 class WordFeature:
 
@@ -11,13 +12,8 @@ class WordFeature:
         :param text:
         """
         self.text = text
-        strokes_path = '词典/strokes.txt'
-        # 如果返回 0, 则也是在unicode中不存在kTotalStrokes字段
-        strokes = []
-        with open(strokes_path, 'r') as fr:
-            for line in fr:
-                strokes.append(int(line.strip()))
-        self.strokes = strokes
+        self.strokes = deal_wrap("../词典/strokes.txt")
+        self.para = split_paragraph(self.text)
 
     def get_stroke(self, c):
         """
@@ -40,11 +36,11 @@ class WordFeature:
         平均字笔画数
         :return:
         """
-        chinese_text = self.text.chinese_chars()
+        chinese_text = chinese_chars(self.text)
         sum = 0
         count = len(chinese_text)
         for i in chinese_text:
-            sum += self.get_stroke(i)
+            sum += int(self.get_stroke(i))
         return sum / count
 
     def four_word(self):
@@ -53,10 +49,10 @@ class WordFeature:
         :return:
         """
         sum = 0
-        for i in self.text.segment():
+        for i in segment(self.text):
             if len(i) >= 4:
                 sum += 1
-        return sum / len(self.text.segment())
+        return sum / len(segment(self.text))
 
     def words_to_phrases(self):
         """
@@ -64,21 +60,21 @@ class WordFeature:
         :return:
         """
         dan = 0
-        for i in self.text.segment():
+        for i in segment(self.text):
             if len(i) == 1:
                 dan += 1
-        return dan / (len(self.text.segment()) - dan)
+        return dan / (len(segment(self.text)) - dan)
 
     def more_nine_word(self):
         """
         超过九笔字比例
         :return:
         """
-        chinese_text = self.text.chinese_chars()
+        chinese_text = chinese_chars(self.text)
         more_9 = 0
         count = len(chinese_text)
         for i in chinese_text:
-            if self.get_stroke(i) > 9:
+            if int(self.get_stroke(i)) > 9:
                 more_9 += 1
         return more_9 / count
 
@@ -88,7 +84,7 @@ class WordFeature:
         连接词数与虚词数（可读性和信息价值）
         :return:
         """
-        text = ''.join(split_paragraph(self.text))
+        text = ''.join(self.para)
         words = peg.cut(text)  # 通过jieba分词获取词的属性
         nw = 0
         allw = 0
@@ -107,3 +103,4 @@ class WordFeature:
         词频统计：计算文章词组频率，利用描述性统计量进行分析（max最大频率，mean平均频率，var频率方差等）
         :return:
         """
+        

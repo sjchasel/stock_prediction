@@ -6,10 +6,10 @@ import logging
 from stanfordcorenlp import StanfordCoreNLP
 import random
 import pandas as pd
-import seaborn as sns
+#import seaborn as sns
 import matplotlib.pyplot as plt
 
-PATH = '词典/'
+PATH = '../词典/'
 
 # 标点符号
 puncs_fine = ['……', '\r\n', '，', '。', ';', '；', '…', '！',
@@ -20,7 +20,7 @@ front_quote_list = ['“', '‘']
 back_quote_list = ['”', '’']
 
 # 分段符号
-para_flag = ['\xa0\xa0\xa0\r\n', '\xa0\xa0\xa0\r\n\u3000\u3000']
+para_flag = ['\xa0\xa0\xa0\r\n', '\xa0\xa0\xa0\r\n\u3000\u3000','???\r\r\r\n']
 # 词典
 
 def deal_wrap(filedict):
@@ -40,8 +40,7 @@ ishdict = deal_wrap(PATH + 'ish.txt')  # 权值为0.5
 insufficientdict = deal_wrap(PATH + 'insufficiently.txt')  # 权值为0.25
 inversedict = deal_wrap(PATH + 'inverse.txt')  # 权值为-1
 stopwords = deal_wrap(PATH + 'stop1205.txt')
-
-
+strokes = deal_wrap(PATH + 'strokes.txt')
 
 
 def split_paragraph(text):
@@ -49,6 +48,7 @@ def split_paragraph(text):
     把输入的文本分段，返回装着每个段落的列表
     """
     for flag in para_flag:
+        para_list = []
         if flag in text:
             para_list = text.split(flag)
     res = [i.strip() for i in para_list]
@@ -93,7 +93,7 @@ def segment(sentence):
     :return:
     """
     sentence = re.sub(' ', '', re.sub('\xa0\xa0\xa0\r\n', '', sentence))
-    jieba.load_userdict('词典/userdict.txt')
+    jieba.load_userdict('../词典/userdict.txt')
     sentence_seged = jieba.cut(sentence.strip())
     outstr = ''
     for word in sentence_seged:

@@ -5,7 +5,7 @@ import random
 import jieba
 
 def words_count(s):
-    stopwords = pd.read_csv('D://学习文件/个人/大三下/1 2 数据科学实战/非结构化数据分析/cn_stopwords.txt',header=None).values.T[0]
+    stopwords = cn_stopwords
     np.append(stopwords,"公司")
     counts = {}
     for ch in '!"#$%&()*+,-./:;<=>?@[\\]^_‘{|}~，。/；‘【】-=《》？：“{}——+、|~·！@#￥%……&*（）1234567890\u3000\xa0 \r\n':

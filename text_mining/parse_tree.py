@@ -10,7 +10,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 
-PATH = 'C:/Users/12968/Desktop/数据科学实战-stock prediction/程序/词典/'
+PATH = '../词典/'
 
 
 class ParseTree:
@@ -113,7 +113,7 @@ class ParseTree:
         :param sentence:
         :return:
         """
-        jieba.load_userdict('C:/Users/12968/Desktop/数据科学实战-stock prediction/程序/词典/userdict.txt')
+        jieba.load_userdict('../词典/userdict.txt')
         sentence_seged = jieba.cut(sentence.strip())
         outstr = ''
         for word in sentence_seged:
@@ -196,17 +196,17 @@ class ParseTree:
         return self.adjp_sum() / len(self.sentences)
 
 
-if __name__ == '__main__':
-    # data = pd.read_csv('C:/Users/12968/Desktop/数据科学实战-stock prediction/数据/新浪公司研报.csv')
-    # samples = random.sample(list(data['content']), 50)
-    # result = []
-    # for sample in samples:
-    #     tree = ParseTree(sample)
-    #     result.append(tree.no_less_than_16())
-    # sns.histplot(result)
-    # plt.show()
+# if __name__ == '__main__':
+#     # data = pd.read_csv('C:/Users/12968/Desktop/数据科学实战-stock prediction/数据/新浪公司研报.csv')
+#     # samples = random.sample(list(data['content']), 50)
+#     # result = []
+#     # for sample in samples:
+#     #     tree = ParseTree(sample)
+#     #     result.append(tree.no_less_than_16())
+#     # sns.histplot(result)
+#     # plt.show()
 
-    data = pd.read_csv('C:/Users/12968/Desktop/数据科学实战-stock prediction/数据/新浪公司研报.csv')
-    sample = list(data['content'])[0]
-    tree = ParseTree(sample)
-    print(tree.np_sum())
+#     data = pd.read_csv('C:/Users/12968/Desktop/数据科学实战-stock prediction/数据/新浪公司研报.csv')
+#     sample = list(data['content'])[0]
+#     tree = ParseTree(sample)
+#     print(tree.np_sum())

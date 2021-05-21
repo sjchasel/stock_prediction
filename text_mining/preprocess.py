@@ -41,6 +41,7 @@ insufficientdict = deal_wrap(PATH + 'insufficiently.txt')  # 权值为0.25
 inversedict = deal_wrap(PATH + 'inverse.txt')  # 权值为-1
 stopwords = deal_wrap(PATH + 'stop1205.txt')
 strokes = deal_wrap(PATH + 'strokes.txt')
+cn_stopwords = deal_wrap(PATH + 'cn_stopwords.txt')
 
 
 def split_paragraph(text):

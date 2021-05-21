@@ -97,10 +97,35 @@ class WordFeature:
                 pcu = pcu + 1
 
         return nw / allw, pcu / allw
-
-    def phrase_frequency(self):
+        
+    def words_count(self):
         """
         词频统计：计算文章词组频率，利用描述性统计量进行分析（max最大频率，mean平均频率，var频率方差等）
         :return:
         """
+        s = ''.join(self.para)
+        stopwords = cn_stopwords
+        np.append(stopwords,"公司")
+        counts = {}
+        for ch in '!"#$%&()*+,-./:;<=>?@[\\]^_‘{|}~，。/；‘【】-=《》？：“{}——+、|~·！@#￥%……&*（）1234567890\u3000\xa0 \r\n':
+            s = s.replace(ch,"")      # 将文本中特殊字符替换为空格
+        for ch in stopwords:
+            s = s.replace(ch,"")   
+        words = jieba.lcut_for_search(s)     # 搜索引擎模式
+        for word in words:
+            counts[word] = counts.get(word, 0) + 1    # 遍历所有词语，每出现一次其对应的值加 1
+        count_list = list(counts.values())
+        return np.mean(count_list), np.var(count_list), np.max(count_list)
+    
+    def get_result(self):
+        """
+        返回以上函数计算的所有结果，字典形式返回
+        """
+        res['avg_stroke'] = self.avg_strokes()
+        res['four_word'] = self.four_word()
+        res['word_phrase'] = self.words_to_phrases()
+        res['nine_stroke'] = self.more_nine_word()
+        res['n_ratio'],res['function_ratio'] = self.ratio_n_and_function()
+        res['word_mean'] ,res['word_var'], res['word_max'] = self.words_count()
+        return res
         

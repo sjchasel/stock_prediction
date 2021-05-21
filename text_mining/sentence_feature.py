@@ -2,6 +2,7 @@
 # _*_ coding:utf-8 _*_
 
 from preprocess import split_sentence_fine, split_sentence_coarse, split_paragraph
+import re
 
 class SentenceFeature:
 
@@ -36,7 +37,7 @@ class SentenceFeature:
 
         return lenn / num
 
-    def no_en_ch(self):
+    def no_en_ch():
         """
         非文本类信息比例:非中英文文本信息的字符所占比例
         """
@@ -60,7 +61,12 @@ class SentenceFeature:
         """
         判断一个字符是否是英文字母
         """
-        if re.match([A-Za-z], word):
+        if re.match("[A-Za-z]", word):
             return True
         return False
+    
+    def get_result(self):
+        res['avg_sentence'] = self.avg_sentence()
+        res['no_text'] = self. no_en_ch()
+        return res
 

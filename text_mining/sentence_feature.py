@@ -66,6 +66,7 @@ class SentenceFeature:
         return False
     
     def get_result(self):
+        res = {}
         res['avg_sentence'] = self.avg_sentence()
         res['no_text'] = self. no_en_ch()
         return res

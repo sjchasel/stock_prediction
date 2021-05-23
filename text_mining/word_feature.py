@@ -121,6 +121,7 @@ class WordFeature:
         """
         返回以上函数计算的所有结果，字典形式返回
         """
+        res = {}
         res['avg_stroke'] = self.avg_strokes()
         res['four_word'] = self.four_word()
         res['word_phrase'] = self.words_to_phrases()

@@ -8,6 +8,7 @@ import random
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+from summarize import *
 
 
 PATH = '../词典/'
@@ -18,7 +19,7 @@ class ParseTree:
     def __init__(self, text):
         self.text = text  # 传入的文本
         # 定义模型
-        self.nlp = StanfordCoreNLP(r'C:/Users/zhaoyu/Desktop/pycode/stanford-corenlp-4.2.1', lang='zh', quiet=False, logging_level=logging.DEBUG)
+        self.nlp = StanfordCoreNLP(r'E:/py/stanford-corenlp-4.2.0', lang='zh', quiet=False, logging_level=logging.DEBUG)
         # 分句
         self.sentences = self.preprocess()
         self.stopwords = []
@@ -27,22 +28,28 @@ class ParseTree:
         stop = PATH + 'stop1205.txt'
         self.stopwords = self.dict_load(stop)
 
+#     def preprocess(self):
+#         """
+#         预处理：
+#         1. 去除换行符、多余的空格、百分号
+#         2. 分句，存入列表
+#         :return:返回句子列表
+#         """
+#         sentences = []
+#         self.text = re.sub('%', '', re.sub(' ', '', re.sub('\xa0\xa0\xa0\r\n', '', self.text)))
+#         start = 0
+#         for i in range(len(self.text)):
+#             if self.text[i] in ['。', '!', '；', '？', '……']:
+#                 sentences.append(self.text[start:i + 1])
+#                 start = i + 1
+#         return sentences
+
     def preprocess(self):
         """
-        预处理：
-        1. 去除换行符、多余的空格、百分号
-        2. 分句，存入列表
-        :return:返回句子列表
+        把文本处理成摘要句子列表
         """
-        sentences = []
-        self.text = re.sub('%', '', re.sub(' ', '', re.sub('\xa0\xa0\xa0\r\n', '', self.text)))
-        start = 0
-        for i in range(len(self.text)):
-            if self.text[i] in ['。', '!', '；', '？', '……']:
-                sentences.append(self.text[start:i + 1])
-                start = i + 1
-        return sentences
-
+        return get_sum(self.text)
+        
     def tree(self, sentence):
         res = self.nlp.parse(sentence)
         # nlp.close()
@@ -56,7 +63,7 @@ class ParseTree:
         sumHeights = []
         for sentence in self.sentences:
             res = self.tree(sentence)  # 语法树，是个字符串
-            sum.append(len(res.split("\r\n")))
+            sumHeights.append(len(res.split("\r\n")))
         return np.sum(sumHeights)
 
     def avg_height(self):
@@ -195,18 +202,19 @@ class ParseTree:
         """
         return self.adjp_sum() / len(self.sentences)
 
-
-# if __name__ == '__main__':
-#     # data = pd.read_csv('C:/Users/12968/Desktop/数据科学实战-stock prediction/数据/新浪公司研报.csv')
-#     # samples = random.sample(list(data['content']), 50)
-#     # result = []
-#     # for sample in samples:
-#     #     tree = ParseTree(sample)
-#     #     result.append(tree.no_less_than_16())
-#     # sns.histplot(result)
-#     # plt.show()
-
-#     data = pd.read_csv('C:/Users/12968/Desktop/数据科学实战-stock prediction/数据/新浪公司研报.csv')
-#     sample = list(data['content'])[0]
-#     tree = ParseTree(sample)
-#     print(tree.np_sum())
+    def get_res(self):
+        res = {}
+        res['sum_height'] = self.sum_of_heights()
+        res['height_16'] = self.no_less_than_16()
+        res['sum_node'] = self.nodes_sum()
+        res['sum_n'] = self.np_sum()
+        res['sum_v'] = self.vp_sum()
+        res['sum_adj'] = self.adjp_sum()
+        res['avg_height'] = self.avg_height()
+        res['16_ratio'] = self.no_less_than_16_percent()
+        res['avg_node'] = self.avg_nodes_sentence()
+        res['word_avg_node'] = self.avg_nodes_word()
+        res['avg_n'] = self.avg_np()
+        res['avg_v'] = self.avg_vp()
+        res['avg_adj'] = self.avg_adjp()
+        return res

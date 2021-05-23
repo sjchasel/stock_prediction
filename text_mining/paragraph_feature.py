@@ -25,6 +25,7 @@ class ParagraphFeature:
         return sentence_corse / para_sum
     
     def get_result(self):
+        res = {}
         res['sum_para'] = self.sum_paragraph()
         res['sen_per_para'] = self.sentences_per_para()
         return res

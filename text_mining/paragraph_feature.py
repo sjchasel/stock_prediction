@@ -21,10 +21,14 @@ class ParagraphFeature:
         :return:
         """
         para_sum = self.sum_paragraph()
-        sentence_corse = len(split_sentence_coarse(self.text))
-        return sentence_corse / para_sum
+        if para_sum == 0:
+            print("段落数为0，出错数据为"+str(self.text))
+            return '-'
+        else:
+            sentence_corse = len(split_sentence_coarse(self.text))
+            return sentence_corse / para_sum
     
-    def get_result(self):
+    def get_res(self):
         res = {}
         res['sum_para'] = self.sum_paragraph()
         res['sen_per_para'] = self.sentences_per_para()

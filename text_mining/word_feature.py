@@ -41,7 +41,11 @@ class WordFeature:
         count = len(chinese_text)
         for i in chinese_text:
             sum += int(self.get_stroke(i))
-        return sum / count
+        if count == 0:
+            print("这篇文本有0个字，出错文本为"+str(self.text))
+            return '-'
+        else:
+            return sum / count
 
     def four_word(self):
         """
@@ -52,7 +56,11 @@ class WordFeature:
         for i in segment(self.text):
             if len(i) >= 4:
                 sum += 1
-        return sum / len(segment(self.text))
+        if len(segment(self.text)) == 0:
+            print("这篇文本的词数为0，出错文本为"+str(self.text))
+            return '-'
+        else:
+            return sum / len(segment(self.text))
 
     def words_to_phrases(self):
         """
@@ -63,7 +71,11 @@ class WordFeature:
         for i in segment(self.text):
             if len(i) == 1:
                 dan += 1
-        return dan / (len(segment(self.text)) - dan)
+        if (len(segment(self.text)) - dan) == 0:
+            print("这篇文章全是单字词，出错文本为"+str(self.text))
+            return '-'
+        else:
+            return dan / (len(segment(self.text)) - dan)
 
     def more_nine_word(self):
         """
@@ -76,7 +88,11 @@ class WordFeature:
         for i in chinese_text:
             if int(self.get_stroke(i)) > 9:
                 more_9 += 1
-        return more_9 / count
+        if count == 0:
+            print("这篇文本的字数为0，出错文本为"+str(self.text))
+            return '-'
+        else:
+            return more_9 / count
 
     def ratio_n_and_function(self):
         """
@@ -95,8 +111,11 @@ class WordFeature:
                 nw = nw + 1
             if flag[0] == "p" or flag[0] == "c" or flag[0] == "u":
                 pcu = pcu + 1
-
-        return nw / allw, pcu / allw
+        if allw == 0:
+            print("这篇文本的词数为0，出错文本为"+str(self.text))
+            return '-','-'
+        else:
+            return nw / allw, pcu / allw
         
     def words_count(self):
         """
@@ -115,9 +134,13 @@ class WordFeature:
         for word in words:
             counts[word] = counts.get(word, 0) + 1    # 遍历所有词语，每出现一次其对应的值加 1
         count_list = list(counts.values())
-        return np.mean(count_list), np.var(count_list), np.max(count_list)
+        if len(count_list) == 0:
+            print("这篇文本的词列表为空，出错数据为"+str(self.text))
+            return '-','-','-'
+        else:
+            return np.mean(count_list), np.var(count_list), np.max(count_list)
     
-    def get_result(self):
+    def get_res(self):
         """
         返回以上函数计算的所有结果，字典形式返回
         """

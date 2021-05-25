@@ -34,10 +34,13 @@ class SentenceFeature:
             plt.xlabel("类型")
             plt.ylabel("数量")
             plt.show()
+        if num == 0:
+            print('句子数为0，出错数据为'+str(self.text))
+            return '-'
+        else:
+            return lenn / num
 
-        return lenn / num
-
-    def no_en_ch():
+    def no_en_ch(self):
         """
         非文本类信息比例:非中英文文本信息的字符所占比例
         """
@@ -47,7 +50,11 @@ class SentenceFeature:
                 pass
             else:
                 sum += 1
-        return sum / len(self.text)
+        if len(self.text) == 0:
+            print('文本中没有字符，出错数据为'+str(self.text))
+            return '-'
+        else:
+            return sum / len(self.text)
 
     def isChinese(self, ch):
         """
@@ -65,7 +72,7 @@ class SentenceFeature:
             return True
         return False
     
-    def get_result(self):
+    def get_res(self):
         res = {}
         res['avg_sentence'] = self.avg_sentence()
         res['no_text'] = self. no_en_ch()

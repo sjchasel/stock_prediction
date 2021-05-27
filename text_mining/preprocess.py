@@ -20,7 +20,7 @@ front_quote_list = ['“', '‘']
 back_quote_list = ['”', '’']
 
 # 分段符号
-para_flag = ['\xa0\xa0\xa0\r\n', '\xa0\xa0\xa0\r\n\u3000\u3000','???\r\r\r\n']
+para_flag = ['\xa0\xa0\xa0\r\n', '\xa0\xa0\xa0\r\n\u3000\u3000','???\r\r\r\n', ' ???\r\r\r\r\n', '???\r\r\r\r\r\n\u3000\u3000', '???\r\r\r\r\r\n\u3000\u3000', '\u3000\u3000', '\r\n']
 # 词典
 
 def deal_wrap(filedict):

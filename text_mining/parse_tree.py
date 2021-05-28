@@ -19,9 +19,10 @@ class ParseTree:
     def __init__(self, text):
         self.text = text  # 传入的文本
         # 定义模型
-        self.nlp = StanfordCoreNLP(r'C:/Users/zhaoyu/Desktop/pycode/stanford-corenlp-4.2.1', lang='zh', quiet=False, logging_level=logging.DEBUG)
+        self.nlp = StanfordCoreNLP(r'E:/py/stanford-corenlp-4.2.0', lang='zh', quiet=False, logging_level=logging.DEBUG)
         # 分句
         self.sentences = self.preprocess()
+        print(self.sentences)
         self.stopwords = []
 
     def load_dicts(self):
@@ -51,6 +52,8 @@ class ParseTree:
         return get_sum(self.text)
         
     def tree(self, sentence):
+        sentence = sentence.replace(' ','')
+        print(sentence)
         res = self.nlp.parse(sentence)
         # nlp.close()
         return res
@@ -62,6 +65,7 @@ class ParseTree:
         """
         sumHeights = []
         for sentence in self.sentences:
+            sentence.replace('%','')
             res = self.tree(sentence)  # 语法树，是个字符串
             sumHeights.append(len(res.split("\r\n")))
         return np.sum(sumHeights)
@@ -169,6 +173,7 @@ class ParseTree:
         """
         num = 0
         for sentence in self.sentences:
+            print(sentence)
             res = self.tree(sentence).split("\r\n")
             for i in res:
                 if 'VP' in i:
